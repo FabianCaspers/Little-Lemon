@@ -1,38 +1,85 @@
-.App {
-  text-align: center;
+/* Primary and Secondary Colors */
+:root {
+  --primary-color-1: #495E57;
+  --primary-color-2: #F4CE14;
+  --secondary-color-1: #EE9972;
+  --secondary-color-2: #FBDABB;
+  --secondary-color-3: #EDEFEE;
+  --secondary-color-4: #333333;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Typefaces */
+body {
+  font-family: 'Karla', sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Markazi Text', serif;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Font Sizes */
+h1 {
+  font-size: 64px;
+  font-weight: 500;
+}
+
+h2 {
+  font-size: 40px;
+  font-weight: 500;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.5;
+  max-width: 65ch;
+}
+
+span {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Navigation Elements */
+nav {
+  display: flex;
+}
+
+nav ul {
+  display: flex;
+  gap: 10px;
+  list-style-type: none;
+}
+
+nav ul li {
+  /* Add your styles here */
+}
+
+/* Images */
+img {
+  /* Add your styles here */
+}
+
+/* Apply the rules to existing HTML elements */
+.Header {
+  /* Add your styles here */
+}
+
+.Nav {
+  display: flex;
+}
+
+.Main {
+  /* Add your styles here */
+}
+
+.Footer {
+  /* Add your styles here */
+}
+
+
+.Container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
