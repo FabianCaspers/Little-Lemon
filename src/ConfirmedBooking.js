@@ -1,12 +1,15 @@
-import React from 'react';
+import React from "react";
 
-function ConfirmedBooking() {
-  return (
-    <div>
-      <h1>Booking Confirmed</h1>
-      <p>Your booking has been confirmed. We look forward to seeing you!</p>
-    </div>
-  );
+const ConfirmedBooking = () => {
+    return(
+        <div className="comfirm">
+            <div>
+            <h1>Booking has been <span>confirmed!</span>
+        </h1>
+            </div>
+        </div>
+
+    )
 }
 
 export default ConfirmedBooking;

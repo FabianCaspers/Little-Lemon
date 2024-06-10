@@ -1,49 +1,61 @@
-import React, { useState } from 'react';
+import React from "react";
+import { useState } from "react";
 
-function BookingForm({ availableTimes, dispatch, submitForm }) {
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-  const [guests, setGuests] = useState(1);
-  const [occasion, setOccasion] = useState('');
-  const [formValid, setFormValid] = useState(false);
 
-  const handleDateChange = (event) => {
-    setDate(event.target.value);
-    dispatch({ type: 'UPDATE_TIMES', date: event.target.value });
-  };
 
-  const handleFormChange = () => {
-    setFormValid(date !== '' && time !== '' && guests > 0);
-  };
+const BookingForm = (props) => {
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (formValid) {
-      submitForm({ date, time, guests, occasion });
-    }
-  };
+   const [occasion, setOccasion] = useState("");
+   const [guests, setGuests] = useState("");
+   const [date, setDate] = useState("");
+   const [times, setTimes] = useState("")
+
+   const handleSumbit = (e) => {
+   e.preventDefault();
+   props.submitForm(e);
+   };
+
+   const handleChange = (e) => {
+    setDate(e);
+    props.dispatch(e);
+   }
 
   return (
-    <form style={{display: 'grid', maxWidth: '200px', gap: '20px'}} onChange={handleFormChange} onSubmit={handleSubmit}>
-      <label htmlFor="res-date">Choose date</label>
-      <input type="date" id="res-date" value={date} onChange={handleDateChange} aria-label="Choose date" required />
-      <label htmlFor="res-time">Choose time</label>
-      <select id="res-time" value={time} onChange={e => setTime(e.target.value)} required>
-        {availableTimes.map((time, index) => (
-          <option key={index}>{time}</option>
-        ))}
-      </select>
-      <label htmlFor="guests">Number of guests</label>
-      <input type="number" id="guests" value={guests} onChange={e => setGuests(e.target.value)} min="1" required />
-      <label htmlFor="occasion">Occasion</label>
-      <select id="occasion" value={occasion} onChange={e => setOccasion(e.target.value)} required>
-        <option value="">--Please choose an occasion--</option>
-        <option>Birthday</option>
-        <option>Anniversary</option>
-      </select>
-      <input type="submit" value="Make Your reservation" disabled={!formValid} />
-    </form>
+    <header>
+      <section>
+        <form onSubmit={handleSumbit}>
+          <fieldset className="formField">
+            <div>
+              <label htmlFor="book-date">Choose Date:</label>
+              <input id="book-date" value={date} onChange={(e) => handleChange(e.target.value)} type="date" required/>
+            </div>
+            <div>
+              <label htmlFor="book-time">Choose Time:</label>
+              <select id="book-time" value={times} onChange={(e) => setTimes(e.target.value)} required>
+                <option value="">Select a Time</option>
+               {props.availableTimes.availableTimes.map(availableTimes => {return <option key={availableTimes}>{availableTimes}</option>})}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="book-guests">Number of Guests:</label>
+              <input id="book-guests" min="1" value={guests} onChange={(e) => {setGuests(e.target.value)}} type={"number"} placeholder={0} max={10} required></input>
+            </div>
+            <div>
+              <label htmlFor="book-occasion">Occasion:</label>
+              <select id="book-occasion" key={occasion} value={occasion} onChange={(e) => setOccasion(e.target.value)} required>
+                <option value="">Select an Option</option>
+                <option>Birthday</option>
+                <option>Anniversary</option>
+              </select>
+            </div>
+            <div className="btnReceive">
+              <input aria-label="On Click" type={"submit"} value={"Make Your Reservation"}></input>
+            </div>
+          </fieldset>
+        </form>
+      </section>
+    </header>
   );
-}
+};
 
 export default BookingForm;

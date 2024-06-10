@@ -1,54 +1,62 @@
-import React, { useReducer, useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import HomePage from './HomePage';
-import BookingPage from './BookingPage';
-import Specials from './Specials';
-import ConfirmedBooking from './ConfirmedBooking';
+import React, { useReducer, useEffect } from "react";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import Booking from "./BookingPage";
+import ConfirmedBooking from "./ConfirmedBooking";
+import Header from "./Header";
 
-async function updateTimes(state, action) {
-  const response = await fetch(`https://api.example.com/available-times?date=${action.date}`);
-  const availableTimes = await response.json();
-  return availableTimes;
-}
 
-async function initializeTimes() {
-  const today = new Date();
-  const response = await fetch(`https://api.example.com/available-times?date=${today.toISOString()}`);
-  const availableTimes = await response.json();
-  return availableTimes;
-}
-
-function Main() {
-  const [availableTimes, dispatch] = useReducer(updateTimes, [], initializeTimes);
-  const navigate = useNavigate();
-
-  const submitForm = async (formData) => {
-    const response = await fetch('https://api.example.com/submit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    });
-    const success = await response.json();
-    if (success) {
-      navigate('/confirmed');
+const Main = () => {
+    const seededRandom = function (seed) {
+        var m = 2**35 - 31;
+        var a = 185852;
+        var s = seed % m;
+        return function () {
+            return (s = s * a % m) / m;
+        };
     }
-  };
 
-  useEffect(() => {
-    initializeTimes();
-  }, []);
+    const fetchAPI = function(date) {
+        let result = [];
+        let random = seededRandom(date.getDate());
 
-  return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/specials" element={<Specials />} />
-      <Route path="/booking" element={<BookingPage availableTimes={availableTimes} dispatch={dispatch} submitForm={submitForm} />} />
-      <Route path="/confirmed" element={<ConfirmedBooking />} />
-      {/* Add more routes as needed */}
-    </Routes>
-  );
+        for(let i = 17; i <= 23; i++) {
+            if(random() < 0.5) {
+                result.push(i + ':00');
+            }
+            if(random() < 0.5) {
+                result.push(i + ':30');
+            }
+        }
+        return result;
+    };
+    const submitAPI = function(formData) {
+        return true;
+    };
+
+    const initialState = {availableTimes:  fetchAPI(new Date())}
+    const [state, dispatch] = useReducer(updateTimes, initialState);
+
+    function updateTimes(state, date) {
+        return {availableTimes: fetchAPI(new Date(date))}
+    }
+    const navigate = useNavigate();
+    function submitForm (formData) {
+        if (submitAPI(formData)) {
+            navigate("/confirmed")
+        }
+    }
+
+    return(
+        <main className="main">
+            <Routes>
+                <Route path="/" element={<Header />} />
+                <Route path="/booking" element={<Booking availableTimes={state} dispatch={dispatch} submitForm={submitForm}/>} />
+                <Route path="/confirmed" element={<ConfirmedBooking/> } />
+            </Routes>
+        </main>
+
+
+    )
 }
 
 export default Main;
